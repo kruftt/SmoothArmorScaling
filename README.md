@@ -25,6 +25,6 @@ This function follows the behavior of the original relatively closely but has sm
 #### Additional Info
 ---
     
-[Github Repo](https://github.com/kruftt/ResourceCostScaling)  
+[Github Repo](https://github.com/kruftt/SmoothArmorScaling)  
 [Valheim Modding Server](https://discord.com/invite/89bBsvK5KC)  
 `Discord ID:` Kruft#6332  
