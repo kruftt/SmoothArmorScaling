@@ -1,0 +1,9 @@
+{
+    "name": "SmoothArmorScaling",
+    "version_number": "0.1.2",
+    "website_url": "",
+    "description": "Replaces the piecewise armor function and includes a configurable armor effectiveness multipler.",
+    "dependencies": [
+        "denikson-BepInExPack_Valheim-5.4.2202"
+    ]
+}
