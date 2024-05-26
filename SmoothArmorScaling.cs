@@ -14,10 +14,10 @@ namespace SmoothArmorScaling
         private const string PLUGIN_NAME = "Smooth Armor Scaling";
         private const string PLUGIN_VERSION = PluginInfo.PLUGIN_VERSION;
         private const string PLUGIN_MIN_VERSION = "0.1.0";
-        private readonly Harmony harmony = new (PLUGIN_GUID);
-        private static ConfigEntry<bool> configLocked;
+        
+        private static ConfigSync configSync;
         private static ConfigEntry<double> armorMultiplier;
-        private ConfigSync configSync;
+
 
         private void Awake()
         {
@@ -26,13 +26,13 @@ namespace SmoothArmorScaling
                 CurrentVersion = PLUGIN_VERSION,
                 MinimumRequiredVersion = PLUGIN_MIN_VERSION
             };
-            
-            configLocked = config("General", "configLocked", true, "Force Server Configuration.");
-            configSync.AddLockingConfigEntry(configLocked);
+
+            configSync.AddLockingConfigEntry(config("General", "configLocked", true, "Force Server Config"));
             armorMultiplier = config("General", "armorEffectiveness", 1.0,
                 new ConfigDescription("Multiply players' effective amount of armor.",
                 new RoundedValueRange(0.0, 5.0, 0.05)));
-            harmony.PatchAll();
+            
+            new (PLUGIN_GUID).PatchAll();
         }
 
         [HarmonyPatch(typeof(HitData.DamageTypes), "ApplyArmor", new [] { typeof(float), typeof(float) })]
