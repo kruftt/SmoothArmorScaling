@@ -2,7 +2,7 @@
 ---
 Replaces the armor function and provides an armor multiplier configuration setting.
 
-The standard armor formula is a piecewise function in which 1 armor = 1 damage reduction for up to half of the incoming damage, after which it has diminishing returns in proportion to its reciprocal. [Refer to the wiki page for damage mechanics.](https://valheim.fandom.com/wiki/Damage_mechanics#Armor)
+The standard armor formula is a piecewise function in which 1 armor = 1 damage reduction for up to half of the incoming damage, after which it has diminishing returns. [Refer to the wiki page for details.](https://valheim.fandom.com/wiki/Damage_mechanics#Armor)
 
 ![Vanilla Armor Scaling Formula](https://static.wikia.nocookie.net/valheim/images/3/38/Code.png/revision/latest?cb=20210309232213)
 
@@ -18,13 +18,8 @@ This function follows the behavior of the original relatively closely but has sm
 
 <br />  
 
-[ServerSync enabled.](https://github.com/blaxxun-boop/ServerSync)
-  
-<br />
-  
-#### Additional Info
----
-    
-[Github Repo](https://github.com/kruftt/SmoothArmorScaling)  
+[ServerSync enabled](https://github.com/blaxxun-boop/ServerSync)  
 [Valheim Modding Server](https://discord.com/invite/89bBsvK5KC)  
-`Discord ID:` Kruft#6332  
+[Github](https://github.com/kruftt/SmoothArmorScaling)  
+
+`Discord:` Kruft#6332  

@@ -2,6 +2,8 @@
 
 ##### 0.1.2
 - Reimplement `RoundedValueRange`
+- Update Icon
+- Add [Github](https://github.com/kruftt/SmoothArmorScaling)  
 
 ##### 0.1.1
 - Clamp `armorEffectiveness` to [0..5] in steps of 0.05
