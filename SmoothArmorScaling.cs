@@ -18,7 +18,6 @@ namespace SmoothArmorScaling
         private static ConfigSync configSync;
         private static ConfigEntry<double> armorMultiplier;
 
-
         private void Awake()
         {
             configSync = new (PLUGIN_GUID) {
