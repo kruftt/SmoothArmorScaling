@@ -32,7 +32,7 @@ namespace SmoothArmorScaling
                 new ConfigDescription("Multiply players' effective amount of armor.",
                 new RoundedValueRange(0.0, 5.0, 0.05)));
             
-            new (PLUGIN_GUID).PatchAll();
+            new Harmony(PLUGIN_GUID).PatchAll();
         }
 
         [HarmonyPatch(typeof(HitData.DamageTypes), "ApplyArmor", new [] { typeof(float), typeof(float) })]
