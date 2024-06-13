@@ -10,16 +10,18 @@ using ServerSync;
 namespace SmoothArmorScaling
 {
     [BepInPlugin(PLUGIN_GUID, PLUGIN_NAME, PLUGIN_VERSION)]
-    [BepInProcess("valheim.exe")]
     public class SmoothArmorScalingPlugin : BaseUnityPlugin
     {
         private const string PLUGIN_GUID = PluginInfo.PLUGIN_GUID;
         private const string PLUGIN_NAME = "Smooth Armor Scaling";
         private const string PLUGIN_VERSION = PluginInfo.PLUGIN_VERSION;
-        private const string PLUGIN_MIN_VERSION = "0.2.0";
+        private const string PLUGIN_MIN_VERSION = "0.4.0";
         
         private static ConfigSync configSync;
+        private static ConfigEntry<bool> smoothArmorScaling;
+        private static ConfigEntry<float> armorEffectiveness;
         private static ConfigEntry<int> playerBaseArmor;
+        private static ConfigEntry<float> damageTaken;
         private static ConfigEntry<float> gearArmorMultiplier;
         private static ConfigEntry<int> gearArmorPerLevel;
         private static ConfigEntry<int> gearFlatArmor;
@@ -34,26 +36,36 @@ namespace SmoothArmorScaling
                 MinimumRequiredVersion = PLUGIN_MIN_VERSION
             };
 
-            configSync.AddLockingConfigEntry(config("0 - Config", "configLocked", true, "Force Server Config"));
+            configSync.AddLockingConfigEntry(
+                config("0 - Config", "0. Force Server Config", true, "Force Server Configuration settings"));
 
-            playerBaseArmor = config("1 - Player", "playerBaseArmor", 0,
-                new ConfigDescription("Adds flat armor to players.",
+            smoothArmorScaling = config("1 - Formula", "1. Smooth Formula", true,
+                new ConfigDescription("Enable the smoothArmorScaling formula."));
+            armorEffectiveness = config("1 - Formula", "2. Armor Effectiveness", 1.0f,
+                new ConfigDescription("Coefficient for the effect of armor in damage reduction.",
+                new RoundedValueRange(0.0f, 2.0f, 0.01f)));
+            damageTaken = config("1 - Formula", "3. Damage Taken", 1.0f,
+                new ConfigDescription("Multiplies remaining damage after armor is applied.",
+                new RoundedValueRange(0.0f, 2.0f, 0.01f)));
+            
+            playerBaseArmor = config("2 - Player", "4. Base Armor", 0,
+                new ConfigDescription("Adds base armor to players.",
                 new AcceptableValueRange<int>(-50, 150)));
 
-            gearArmorMultiplier = config("2 - Gear", "gearArmorMultiplier", 1.0f,
+            gearArmorMultiplier = config("3 - Gear", "5. Base Armor Multiplier", 1.0f,
                 new ConfigDescription("Multiply base armor of Head, Chest, and Legs.",
                 new RoundedValueRange(0.0f, 5.0f, 0.05f)));
-            gearArmorPerLevel = config("2 - Gear", "gearArmorPerLevel", 2,
+            gearArmorPerLevel = config("3 - Gear", "6. Armor Per Level", 2,
                 new ConfigDescription("Armor added per quality level for Head, Chest, Legs.",
                 new AcceptableValueRange<int>(0, 10)));
-            gearFlatArmor = config("2 - Gear", "gearFlatArmor", 0,
+            gearFlatArmor = config("3 - Gear", "7. Additional Armor", 0,
                 new ConfigDescription("Adds additional flat armor to Head, Chest, Legs.",
                 new AcceptableValueRange<int>(0, 40)));
             
-            capeArmorPerLevel = config("3 - Shoulders", "capeArmorPerLevel", 1,
+            capeArmorPerLevel = config("4 - Shoulders", "8. Armor Per Level", 1,
                 new ConfigDescription("Armor added per quality level for Shoulders.",
                 new AcceptableValueRange<int>(0, 6)));
-            capeFlatArmor = config("3 - Shoulders", "capeFlatArmor", 0,
+            capeFlatArmor = config("4 - Shoulders", "9. Additional Armor", 0,
                 new ConfigDescription("Adds additional flat armor to Shoulders.",
                 new AcceptableValueRange<int>(0, 10)));
 
@@ -130,8 +142,10 @@ namespace SmoothArmorScaling
             [HarmonyPriority(Priority.Last)]
             static bool ApplyArmorPrefix(float dmg, float ac, ref float __result)
             {
-                float basis = 1.0f + (ac / dmg);
-                __result = dmg / (basis * basis);
+
+                if (smoothArmorScaling.Value == false) return true;
+                float basis = 1.0f + (ac * armorEffectiveness.Value / dmg);
+                __result = damageTaken.Value * dmg / (basis * basis);
                 return false;
             }
         }
@@ -155,7 +169,7 @@ namespace SmoothArmorScaling
             public override object Clamp(object value)
             {
                 float v = Convert.ToSingle(value) + (0.5f * step);
-                return (v < this.MinValue) ? this.MinValue : (v > this.MaxValue) ? this.MaxValue : v - (v % step);
+                return (v < this.MinValue) ? this.MinValue : (v > this.MaxValue) ? this.MaxValue : (float)Math.Round(v - (v % step), 2);
             }
             public override bool IsValid(object value)
             {

@@ -1,6 +1,6 @@
 # Smooth Armor Scaling
 
-- Replaces the piecewise damage reduction function and provides several global gear configuration options.
+- Replaces the piecewise damage reduction function and provides a damage taken and global gear configuration options.
 
 <br/>  
   
@@ -13,9 +13,9 @@ The standard armor formula is a piecewise function in which 1 armor = 1 damage r
 
 This mod replaces that piecewise function with a singular function:
   
-```
+```cs
 float basis = 1.0f + (ac * armorEffectiveness / dmg);
-return dmg / (basis * basis);
+return (dmg * damageTaken) / (basis * basis);
 ```
 
 This function follows the behavior of the original relatively closely but has smooth scaling across all values. Armor will be more effective vs larger hits and behave more consistently vs varying hit sizes.
@@ -24,22 +24,29 @@ This function follows the behavior of the original relatively closely but has sm
   
 ## Gear Configuration
 
-As of v0.2.0 the `armorEffectiveness` configuration setting has been removed and the following settings added:
+Settings can be used to adjust the armor amounts on players and gear as well as overall damage taken:
 
-`playerBaseArmor` Add flat armor to players.  
-`gearArmorMultiplier` Multiply base armor of Head, Chest, and Leg pieces.  
-`gearFlatArmor` Add flat armor to Head, Chest, and Leg pieces.  
-`gearArmorPerLevel` Armor added per quality level for Head, Chest, and Leg pieces.  
-`capeFlatArmor` Add flat armor to Capes.  
-`capeArmorPerLevel` Armor added per quality level for Capes.  
-
-As opposed to the hidden effect of `armorEffectiveness` these settings are properly reflected on the tooltip values for the gear and player.
+- Enable/disable the smooth armor function.  
+- Coefficient for the effect of armor in damage reduction.  
+- Multiply the final amount of damage applied to player.  
+  
+- Add flat armor to players.  
+  
+- Multiply base armor of Head, Chest, and Leg pieces.  
+- Add flat armor to Head, Chest, and Leg pieces.  
+- Armor added per quality level for Head, Chest, and Leg pieces.  
+  
+- Add flat armor to Capes.  
+- Armor added per quality level for Capes.  
+  
+The results of applying these settings are reflected on their respective tooltips.  
 
 <br/> 
 
 ---  
 [ServerSync enabled](https://github.com/blaxxun-boop/ServerSync)  
 [Valheim Modding Server](https://discord.com/invite/89bBsvK5KC)  
+[Thunderstore](https://thunderstore.io/c/valheim/p/kruft/SmoothArmorScaling/)
 [Github](https://github.com/kruftt/SmoothArmorScaling)  
 
 `Discord` Kruft#6332  

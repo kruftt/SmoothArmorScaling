@@ -1,8 +1,8 @@
 {
     "name": "SmoothArmorScaling",
-    "version_number": "0.2.0",
+    "version_number": "0.4.2",
     "website_url": "",
-    "description": "Replaces the piecewise damage reduction function and provides several global gear configuration options.",
+    "description": "Replaces the piecewise damage reduction function and provides a damage taken and global gear configuration options.",
     "dependencies": [
         "denikson-BepInExPack_Valheim-5.4.2202"
     ]
