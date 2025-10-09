@@ -1,5 +1,8 @@
 ### Changelog
 
+##### 0.4.3
+- Bump for Call to Arms!
+
 ##### 0.4.2
 - Remove `BepinProcess` to resolve [server side process name issue](https://github.com/kruftt/SmoothArmorScaling/issues/1).
 
